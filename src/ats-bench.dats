@@ -22,7 +22,7 @@ fun collatz_length {n : nat} (n : int(n)) : int =
   end
 
 extern
-fnx collatz : int -> int =
+fun collatz : int -> int =
   "mac#"
 
 implement collatz (m) =
