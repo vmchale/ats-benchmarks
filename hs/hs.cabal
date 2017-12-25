@@ -9,7 +9,6 @@ copyright:           Copyright: (c) 2017 Vanessa McHale
 build-type:          Simple
 extra-doc-files:     README.md
 cabal-version:       >=1.18
-extra-source-files:  ats/collatz.h
 
 Flag development {
   Description: Enable `-Werror`
@@ -18,7 +17,7 @@ Flag development {
 }
 
 library
-  c-sources:           ats/collatz.c
+  c-sources:           cbits/collatz.c
   hs-source-dirs:      src
   exposed-modules:     Lib
   build-depends:       base >= 4.7 && < 5

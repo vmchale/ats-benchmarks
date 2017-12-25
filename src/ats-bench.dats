@@ -22,6 +22,13 @@ fun collatz_length {n : nat} (n : int(n)) : int =
   end
 
 extern
+fun collatz_stack {n : nat} : int(n) -> int =
+  "mac#"
+
+implement collatz_stack (m) =
+  collatz_length(m)
+
+extern
 fun collatz : int -> int =
   "mac#"
 

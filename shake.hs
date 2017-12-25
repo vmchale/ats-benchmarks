@@ -9,9 +9,9 @@ import           System.FilePath.Posix
 
 main :: IO ()
 main = shakeArgs shakeOptions { shakeFiles=".shake" } $ do
-    want [ "target/libcollatz.so", "hs/ats/libcollatz.so", "hs/ats/collatz.o", "hs/ats/collatz.c" ]
+    want [ "target/libcollatz.so", "hs/cbits/collatz.c" ]
 
-    "hs/ats//*" %> \out -> do
+    "hs/cbits//*" %> \out -> do
         let fname = takeFileName out
         need ["target/" ++ fname]
         cmd ["cp", "target/" ++ fname, out]
