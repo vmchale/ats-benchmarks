@@ -19,6 +19,7 @@ main = shakeArgs shakeOptions { shakeFiles=".shake" } $ do
         command_ [Cwd "rs"] "cargo" ["bench"]
 
     "ci" ~> do
+        need ["hs/cbits/collatz.c"]
         cmd_ ["tomlcheck", "--file", ".atsfmt.toml"]
         cmd_ ["yamllint", "hs/stack.yaml"]
         cmd_ ["hlint", "hs"]

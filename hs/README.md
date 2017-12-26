@@ -1,5 +1,0 @@
-# hs
-
-## Installation
-
-## Configuration

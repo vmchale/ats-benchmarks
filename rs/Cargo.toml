@@ -1,10 +1,8 @@
 [package]
-name = "rs"
+name = "collatz"
 version = "0.1.0"
 authors = ["Vanessa McHale <vamchale@gmail.com>"]
 exclude = [ ".gitignore" ]
 
 [profile.release]
 lto = true
-
-[dependencies]

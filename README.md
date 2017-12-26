@@ -1,6 +1,6 @@
 # ats-benchmarks
 
-This is a repo for 
+This is a repository for ATS benchmarks.
 
 ## Building
 

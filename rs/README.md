@@ -1,5 +1,0 @@
-# rs
-
-## Installation
-
-## Configuration
