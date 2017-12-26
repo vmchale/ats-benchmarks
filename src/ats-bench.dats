@@ -4,7 +4,7 @@
 
 %{$
 int collatz_c(int n) {
-  int l;
+  int l = 1;
   while (n != 1) {
     if (n % 2 == 0)
       n = n / 2;
@@ -34,6 +34,29 @@ fun collatz_length {n : nat} (n : int(n)) : int =
   in
     res
   end
+
+fun collatz_functional(n : int) : int =
+  case+ n of
+    | 1 => 1
+    | x when n mod 2 = 0 => 1 + collatz_functional(x / 2)
+    | x => 1 + collatz_functional(3 * x + 1)
+
+fun collatz_stack_fun {n : nat} (n : int(n)) : int =
+  let
+    var g = fix@ f (x : int) : int => case+ x of
+      | 1 => 1
+      | n when x mod 2 = 0 => 1 + f(n / 2)
+      | n => 1 + f(3 * n + 1)
+  in
+    g(n)
+  end
+
+extern
+fun collatz_fs {n : nat} : int(n) -> int =
+  "mac#"
+
+implement collatz_fs (m) =
+  collatz_stack_fun(m)
 
 extern
 fun collatz {n : nat} : int(n) -> int =
