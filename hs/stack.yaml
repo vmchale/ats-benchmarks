@@ -1,0 +1,5 @@
+---
+resolver: lts-10.0
+extra-include-dirs:
+  - /usr/local/lib/ats2-postiats-0.3.8/ccomp/runtime
+  - /usr/local/lib/ats2-postiats-0.3.8

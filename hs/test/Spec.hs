@@ -3,10 +3,7 @@ import           Test.Hspec
 import           Test.Hspec.QuickCheck
 
 main :: IO ()
-main = hspec $ do
-    parallel $ describe "collatzH" $
-        prop "should agree with the pure Haskell function" $
-            \x -> x < 1 || collatzH x == collatzPure x
+main = hspec $
     parallel $ describe "collatzStack" $
         prop "should agree with the pure Haskell function" $
             \x -> x < 1 || collatzStack x == collatzPure x

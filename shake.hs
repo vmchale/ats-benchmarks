@@ -12,6 +12,19 @@ main = shakeArgs shakeOptions { shakeFiles=".shake" } $ do
 
     want [ "hs/cbits/collatz.c" ]
 
+    "bench" ~> do
+        need ["hs/cbits/collatz.c"]
+        path <- fromMaybe "" <$> getEnv "PATH"
+        command_ [Cwd "hs", AddEnv "PATH" path, RemEnv "GHC_PACKAGE_PATH"] "cabal" ["new-bench"]
+        command_ [Cwd "rs"] "cargo" ["bench"]
+
+    "ci" ~> do
+        cmd_ ["tomlcheck", "--file", ".atsfmt.toml"]
+        cmd_ ["yamllint", "hs/stack.yaml"]
+        cmd_ ["hlint", "hs"]
+        path <- fromMaybe "" <$> getEnv "PATH"
+        command_ [Cwd "hs", AddEnv "PATH" path, RemEnv "GHC_PACKAGE_PATH"] "cabal" ["new-test"]
+
     "hs/cbits/collatz.c" %> \out -> do
         cmd_ ["mkdir", "-p", "hs/cbits"]
         dats <- getDirectoryFiles "" ["//*.dats"]
@@ -30,5 +43,5 @@ main = shakeArgs shakeOptions { shakeFiles=".shake" } $ do
 
     "clean" ~> do
         cmd_ ["sn", "c"]
-        removeFilesAfter "." ["//*.c", "tags", "build"]
+        removeFilesAfter "." ["//*.c", "//tags", "build"]
         removeFilesAfter ".shake" ["//*"]

@@ -4,8 +4,14 @@ This is a repo for
 
 ## Building
 
-First, you will need to install [cargo](https://rustup.rs/),
-[patscc](http://www.ats-lang.org/Downloads.html), and
-[stack](https://haskellstack.org/).
+You will need to install [cargo](https://rustup.rs/),
+[patscc](http://www.ats-lang.org/Downloads.html),
+[stack](https://haskellstack.org/),
+[GHC](https://www.haskell.org/ghc/download.html), and
+[cabal](https://www.haskell.org/cabal/download.html).
 
-## Running the Benchmarks
+You can then run the benchmarks with:
+
+```
+./shake.hs bench
+```

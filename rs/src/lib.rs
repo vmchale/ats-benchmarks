@@ -5,6 +5,10 @@ extern crate test;
 
 use test::test::Bencher;
 
+fn modular(a: i64, b: i64) -> i64 {
+    ((a % b) + b) % b
+}
+
 pub fn collatz_length(mut i: i64) -> i64 {
     let mut l = 1;
     while i != 1 {
@@ -18,11 +22,16 @@ pub fn collatz_length(mut i: i64) -> i64 {
 }
 
 #[bench]
-fn bench_collatz(b: &mut Bencher) {
-    let constant = 10971;
-    b.iter(|| collatz_length(constant));
+fn bench_collatz_2223(b: &mut Bencher) {
+    b.iter(|| collatz_length(2223));
 }
 
-fn modular(a: i64, b: i64) -> i64 {
-    ((a % b) + b) % b
+#[bench]
+fn bench_collatz_10971(b: &mut Bencher) {
+    b.iter(|| collatz_length(10971));
+}
+
+#[bench]
+fn bench_collatz_106239(b: &mut Bencher) {
+    b.iter(|| collatz_length(106239));
 }

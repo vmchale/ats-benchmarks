@@ -3,13 +3,11 @@ module Main where
 import           Criterion.Main
 import           Lib
 
-constant :: Int
-constant = 10971
-
 main :: IO ()
 main =
-    defaultMain [ bgroup "collatz"
-                      [ bench "collatzH" $ nf collatzH constant
-                      , bench "collatzStack" $ nf collatzStack constant
-                      , bench "collatzPure" $ nf collatzPure constant ]
+    defaultMain [ bgroup "collatzStack"
+                      [ bench "2223" $ nf collatzStack 2223
+                      , bench "10971" $ nf collatzStack 10971
+                      , bench "106239" $ nf collatzStack 106239
+                      ]
                 ]
