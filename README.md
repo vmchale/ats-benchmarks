@@ -12,6 +12,6 @@ You will need to install [cargo](https://rustup.rs/),
 
 You can then run the benchmarks with:
 
-```
-./shake.hs bench
+```bash
+ $ ./shake.hs bench
 ```
