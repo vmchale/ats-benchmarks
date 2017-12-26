@@ -1,5 +1,11 @@
-# ats-bench
+# ats-benchmarks
 
-## Installation
+This is a repo for 
 
-## Configuration
+## Building
+
+First, you will need to install [cargo](https://rustup.rs/),
+[patscc](http://www.ats-lang.org/Downloads.html), and
+[stack](https://haskellstack.org/).
+
+## Running the Benchmarks

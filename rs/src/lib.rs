@@ -18,8 +18,9 @@ pub fn collatz_length(mut i: i64) -> i64 {
 }
 
 #[bench]
-fn bench_collatz_2223(b: &mut Bencher) {
-    b.iter(|| collatz_length(2223));
+fn bench_collatz(b: &mut Bencher) {
+    let constant = 10971;
+    b.iter(|| collatz_length(constant));
 }
 
 fn modular(a: i64, b: i64) -> i64 {
