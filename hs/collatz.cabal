@@ -1,0 +1,47 @@
+name:                collatz
+version:             0.1.0.0
+license:             BSD3
+author:              Vanessa McHale
+maintainer:          vamchale@gmail.com
+copyright:           Copyright: (c) 2017 Vanessa McHale
+build-type:          Simple
+extra-doc-files:     README.md
+cabal-version:       >=1.18
+
+Flag development {
+  Description: Enable `-Werror`
+  manual: True
+  default: False
+}
+
+library
+  c-sources:           cbits/collatz.c
+  hs-source-dirs:      src
+  exposed-modules:     Lib
+  build-depends:       base >= 4.7 && < 5
+  default-language:    Haskell2010
+  if flag(development)
+    ghc-options: -Werror
+  ghc-options:         -Wall -Wincomplete-uni-patterns -Wincomplete-record-updates -Wcompat
+
+test-suite test
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      test
+  main-is:             Spec.hs
+  build-depends:       base
+                     , collatz
+                     , hspec
+  if flag(development)
+    ghc-options: -Werror
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N -Wall -Wincomplete-uni-patterns -Wincomplete-record-updates -Wcompat
+  default-language:    Haskell2010
+
+benchmark bench
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      bench
+  main-is:             Bench.hs
+  build-depends:       base
+                     , collatz
+                     , criterion
+  ghc-options:         -O2 -Wall -Wincomplete-uni-patterns -Wincomplete-record-updates -Wcompat
+  default-language:    Haskell2010
