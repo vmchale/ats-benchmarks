@@ -44,5 +44,5 @@ benchmark bench
   build-depends:       base
                      , collatz
                      , criterion
-  ghc-options:         -O2 -Wall -Wincomplete-uni-patterns -Wincomplete-record-updates -Wcompat -optc-mtune=native -optc-flto
+  ghc-options:         -O2 -Wall -Wincomplete-uni-patterns -Wincomplete-record-updates -Wcompat -optc-mtune=native -optc-flto -optc-O3
   default-language:    Haskell2010
