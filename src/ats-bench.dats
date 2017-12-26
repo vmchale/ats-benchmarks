@@ -9,7 +9,7 @@ fun collatz_length {n : nat} (n : int(n)) : int =
         let
           val () = !res := 1 + !res
         in
-          if g0int_mod(n, 2) = 0 then
+          if n mod 2 = 0 then
             loop(pf | n / 2, res)
           else
             loop(pf | 3 * n + 1, res)

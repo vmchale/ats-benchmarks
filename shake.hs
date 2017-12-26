@@ -33,7 +33,6 @@ main = shakeArgs shakeOptions { shakeFiles=".shake" } $ do
         hats <- getDirectoryFiles "" ["//*.hats"]
         cats <- getDirectoryFiles "" ["//*.cats"]
         need $ dats <> sats <> hats <> cats
-        need ["src/ats-bench.dats"]
         let patshome = "/usr/local/lib/ats2-postiats-0.3.8"
         (Exit c, Stderr err) <- command [EchoStderr False, AddEnv "PATSHOME" patshome] "patscc" ("-ccats" : dats)
         cmd_ [Stdin err] Shell "pats-filter"
