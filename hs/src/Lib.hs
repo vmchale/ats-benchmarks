@@ -2,7 +2,7 @@
 
 module Lib
     ( collatzPure
-    , collatzStack
+    , collatzATS
     , collatzC
     ) where
 
@@ -14,8 +14,8 @@ foreign import ccall unsafe collatz_c :: CInt -> CInt
 collatzC :: Int -> Int
 collatzC = fromIntegral . collatz_c . fromIntegral
 
-collatzStack :: Int -> Int
-collatzStack = fromIntegral . collatz . fromIntegral
+collatzATS :: Int -> Int
+collatzATS = fromIntegral . collatz . fromIntegral
 
 collatzPure :: Int -> Int
 collatzPure 1 = 1
