@@ -1,19 +1,27 @@
 #!/usr/bin/env stack
 -- stack runghc --resolver lts-10.2 --package shake --install-ghc
 
-import           Data.Maybe            (fromMaybe)
+import           Data.Maybe                 (fromMaybe)
 import           Data.Monoid
 import           Development.Shake
-import           System.Exit           (ExitCode (..))
+import           Development.Shake.FilePath
+import           System.Exit                (ExitCode (..))
 import           System.FilePath.Posix
 
 main :: IO ()
 main = shakeArgs shakeOptions { shakeFiles=".shake" } $ do
 
-    want [ "hs/cbits/collatz.c" ]
+    want [ "docs/criterion.html", "docs/derangement-RAMP.svg", "docs/derangement-GMP.svg", "docs/derangement-bigint.svg" ]
 
-    {- "docs/criterion-RAMP.svg" %> \_ -> do -}
-        {- need [".criterion/derangement (RAMP)/base/regression.svg"] -}
+    "rs//*.svg" %> \_ -> do
+        need ["rs/Cargo.toml", "rs/src/lib.rs", "rs/benches/collatz.rs"]
+        command_ [Cwd "rs"] "cargo" ["bench"]
+
+    "docs/*.svg" %> \out -> do
+        let fileBase = dropExtension (dropDirectory1 out)
+        let target = "rs/.criterion/" ++ fileBase ++ "/new/regression.svg"
+        need [target]
+        command_ [] "mv" [target, out]
 
     "hs/dist-newstyle/build/x86_64-linux/ghc-8.2.2/collatz-0.1.0.0/b/bench/opt/build/bench/bench" %> \_ -> do
         need ["hs/cbits/collatz.c", "hs/src/Lib.hs", "hs/Setup.hs", "hs/cabal.project.local", "hs/collatz.cabal"]
@@ -23,10 +31,6 @@ main = shakeArgs shakeOptions { shakeFiles=".shake" } $ do
     "docs/criterion.html" %> \out -> do
         need ["hs/cbits/collatz.c", "hs/dist-newstyle/build/x86_64-linux/ghc-8.2.2/collatz-0.1.0.0/b/bench/opt/build/bench/bench"]
         command [] "hs/dist-newstyle/build/x86_64-linux/ghc-8.2.2/collatz-0.1.0.0/b/bench/opt/build/bench/bench" ["--output", out]
-
-    "bench" ~> do
-        need ["docs/criterion.html"]
-        command_ [Cwd "rs"] "cargo" ["bench"]
 
     "ci" ~> do
         need ["hs/cbits/collatz.c"]

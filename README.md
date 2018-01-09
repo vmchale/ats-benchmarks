@@ -11,8 +11,14 @@ You will need to install [cargo](https://rustup.rs/),
 [GHC](https://www.haskell.org/ghc/download.html), and
 [cabal](https://www.haskell.org/cabal/download.html).
 
-You can then run the benchmarks with:
+You can then generate benchmark data with:
 
 ```bash
- $ ./shake.hs bench
+ $ ./shake.hs
+```
+
+and rebuild as necessary with:
+
+```bash
+ $ ./shake.hs --rebuild
 ```
