@@ -11,7 +11,7 @@ rust-gmp = "0.5"
 ramp = "0.3"
 
 [dev-dependencies]
-criterion = "0.1"
+criterion = { git = "https://github.com/japaric/criterion.rs.git" }
 
 [[bench]]
 name = "collatz"

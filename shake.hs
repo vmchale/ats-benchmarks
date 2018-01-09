@@ -13,7 +13,7 @@ main = shakeArgs shakeOptions { shakeFiles=".shake" } $ do
 
     want [ "docs/criterion.html", "docs/derangement-RAMP.svg", "docs/derangement-GMP.svg", "docs/derangement-bigint.svg" ]
 
-    "rs//*.svg" %> \_ -> do
+    ["rs/.criterion/derangement-bigint/new/regression.svg", "rs/.criterion/derangement-RAMP/new/regression.svg", "rs/.criterion/derangement-GMP/new/regression.svg"] &%> \_ -> do
         need ["rs/Cargo.toml", "rs/src/lib.rs", "rs/benches/collatz.rs"]
         command_ [Cwd "rs"] "cargo" ["bench"]
 
