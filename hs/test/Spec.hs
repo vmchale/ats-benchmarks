@@ -10,3 +10,6 @@ main = hspec $ do
     parallel $ describe "collatzC" $
         prop "should agree with the pure Haskell function" $
             \x -> x < 1 || collatzC x == collatzPure x
+    parallel $ describe "derangementATS" $
+        it "should agree with the pure Haskell function" $
+            derangementATS 35 >>= (`shouldBe` derangement 35)
