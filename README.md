@@ -17,7 +17,7 @@ You can then generate benchmark data with:
  $ ./shake.hs
 ```
 
-and rebuild as necessary with:
+and regenerate the data with:
 
 ```bash
  $ ./shake.hs --rebuild
