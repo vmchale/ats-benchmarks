@@ -2,11 +2,63 @@
 
 #![allow(unused_imports)]
 extern crate test;
+extern crate num_bigint;
+extern crate num_traits;
+extern crate gmp;
 
 use test::test::Bencher;
+use num_bigint::BigInt;
+use num_bigint::BigUint;
+use num_traits::{Zero, One};
+use std::mem::replace;
+use gmp::mpz::Mpz;
+use num_bigint::ToBigInt;
 
 fn modular(a: i64, b: i64) -> i64 {
     ((a % b) + b) % b
+}
+
+pub fn factorial(mut i: i64) -> i64 {
+    let mut l = 1;
+    while i != 0 {
+        l = l * i;
+        i = i - 1;
+    }
+    l
+}
+
+pub fn derangements(mut i: i64) -> Mpz {
+    match i {
+        0 => Mpz::from(1),
+        1 => Mpz::from(0),
+        _ => {
+            let mut n1: Mpz = Mpz::from(0);
+            let mut n0: Mpz = Mpz::from(1);
+            while i != 0 {
+                let n2 = (i - 1) * (n0 + &n1);
+                n0 = replace(&mut n1, n2);
+                i = i - 1;
+            }
+            n0
+        }
+    }
+}
+
+pub fn derangements_slow(mut i: i64) -> BigInt {
+    match i {
+        0 => One::one(),
+        1 => Zero::zero(),
+        _ => {
+    let mut n1: BigInt = Zero::zero();
+    let mut n0: BigInt = One::one();
+    while i != 0 {
+        let n2 = (i - 1) * (n0 + &n1);
+        n0 = replace(&mut n1, n2);
+        i = i - 1;
+    }
+    n0
+        }
+    }
 }
 
 pub fn collatz_length(mut i: i64) -> i64 {
@@ -19,6 +71,39 @@ pub fn collatz_length(mut i: i64) -> i64 {
         l += 1;
     }
     l
+}
+
+#[test]
+fn test_derangements_gmp() {
+    let expected = Mpz::from(1334961);
+    assert_eq!(derangements(10), expected);
+}
+
+#[test]
+fn test_derangements() {
+    let expected = ToBigInt::to_bigint(&1334961).unwrap();
+    assert_eq!(derangements_slow(10), expected);
+}
+
+#[bench]
+fn bench_derangements(b: &mut Bencher) {
+    b.iter(|| derangements(64));
+}
+
+#[bench]
+fn bench_derangements_slow(b: &mut Bencher) {
+    b.iter(|| derangements_slow(64));
+}
+
+#[test]
+fn test_factorial() {
+    let expected = 6227020800;
+    assert_eq!(factorial(13), expected);
+}
+
+#[bench]
+fn bench_factorial(b: &mut Bencher) {
+    b.iter(|| factorial(13));
 }
 
 #[bench]
