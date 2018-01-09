@@ -5,7 +5,9 @@ extern crate test;
 extern crate num_bigint;
 extern crate num_traits;
 extern crate gmp;
+extern crate ramp;
 
+use ramp::Int;
 use test::test::Bencher;
 use num_bigint::BigInt;
 use num_bigint::BigUint;
@@ -25,6 +27,23 @@ pub fn factorial(mut i: i64) -> i64 {
         i = i - 1;
     }
     l
+}
+
+pub fn derangements_ramp(mut i: u64) -> Int {
+    match i {
+        0 => Int::from(1),
+        1 => Int::from(0),
+        _ => {
+            let mut n1: Int = Int::from(0);
+            let mut n0: Int = Int::from(1);
+            while i != 0 {
+                let n2 = (i - 1) * (n0 + &n1);
+                n0 = replace(&mut n1, n2);
+                i = i - 1;
+            }
+            n0
+        }
+    }
 }
 
 pub fn derangements(mut i: i64) -> Mpz {
@@ -80,6 +99,12 @@ fn test_derangements_gmp() {
 }
 
 #[test]
+fn test_derangements_ramp() {
+    let expected = Int::from(1334961);
+    assert_eq!(derangements_ramp(10), expected);
+}
+
+#[test]
 fn test_derangements() {
     let expected = ToBigInt::to_bigint(&1334961).unwrap();
     assert_eq!(derangements_slow(10), expected);
@@ -88,6 +113,11 @@ fn test_derangements() {
 #[bench]
 fn bench_derangements(b: &mut Bencher) {
     b.iter(|| derangements(64));
+}
+
+#[bench]
+fn bench_derangements_ramp(b: &mut Bencher) {
+    b.iter(|| derangements_ramp(64));
 }
 
 #[bench]

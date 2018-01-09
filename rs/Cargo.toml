@@ -7,7 +7,8 @@ exclude = [ ".gitignore" ]
 [dependencies]
 num-bigint = "0.1"
 num-traits = "0.1"
-rust-gmp = "0.5.0"
+rust-gmp = "0.5"
+ramp = "0.3"
 
 [profile.release]
 lto = true
