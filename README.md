@@ -14,11 +14,11 @@ You will need to install [cargo](https://rustup.rs/),
 You can then generate benchmark data with:
 
 ```bash
- $ ./shake.hs
+ $ ./shake.hs bench
 ```
 
 and regenerate the data with:
 
 ```bash
- $ ./shake.hs --rebuild
+ $ ./shake.hs bench --rebuild
 ```
