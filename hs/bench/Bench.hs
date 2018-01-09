@@ -23,5 +23,6 @@ main =
                       ]
                 , bgroup "derangement"
                       [ bench "derangement" $ nf derangement 64
+                      , bench "derangementATS" $ nfIO (derangementATS 64)
                       ]
                 ]
