@@ -12,6 +12,9 @@ main = shakeArgs shakeOptions { shakeFiles=".shake" } $ do
 
     want [ "hs/cbits/collatz.c" ]
 
+    {- "docs/criterion-RAMP.svg" %> \_ -> do -}
+        {- need [".criterion/derangement (RAMP)/base/regression.svg"] -}
+
     "hs/dist-newstyle/build/x86_64-linux/ghc-8.2.2/collatz-0.1.0.0/b/bench/opt/build/bench/bench" %> \_ -> do
         need ["hs/cbits/collatz.c", "hs/src/Lib.hs", "hs/Setup.hs", "hs/cabal.project.local", "hs/collatz.cabal"]
         path <- fromMaybe "" <$> getEnv "PATH"
@@ -53,3 +56,4 @@ main = shakeArgs shakeOptions { shakeFiles=".shake" } $ do
         removeFilesAfter "." ["//*.c", "//tags", "build"]
         removeFilesAfter ".shake" ["//*"]
         removeFilesAfter "docs" ["//*"]
+        removeFilesAfter "rs/.criterion" ["//*"]

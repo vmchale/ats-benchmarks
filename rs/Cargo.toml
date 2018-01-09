@@ -10,5 +10,12 @@ num-traits = "0.1"
 rust-gmp = "0.5"
 ramp = "0.3"
 
+[dev-dependencies]
+criterion = "0.1"
+
+[[bench]]
+name = "collatz"
+harness = false
+
 [profile.release]
 lto = true
