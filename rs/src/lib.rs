@@ -63,7 +63,7 @@ pub fn derangements(mut i: i64) -> Mpz {
     }
 }
 
-pub fn derangements_slow(mut i: i64) -> BigInt {
+pub fn derangements_bigint(mut i: i64) -> BigInt {
     match i {
         0 => One::one(),
         1 => Zero::zero(),
@@ -107,7 +107,7 @@ fn test_derangements_ramp() {
 #[test]
 fn test_derangements() {
     let expected = ToBigInt::to_bigint(&1334961).unwrap();
-    assert_eq!(derangements_slow(10), expected);
+    assert_eq!(derangements_bigint(10), expected);
 }
 
 #[bench]
@@ -121,8 +121,8 @@ fn bench_derangements_ramp(b: &mut Bencher) {
 }
 
 #[bench]
-fn bench_derangements_slow(b: &mut Bencher) {
-    b.iter(|| derangements_slow(64));
+fn bench_derangements_bigint(b: &mut Bencher) {
+    b.iter(|| derangements_bigint(64));
 }
 
 #[test]

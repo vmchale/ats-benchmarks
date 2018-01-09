@@ -12,10 +12,17 @@ main = shakeArgs shakeOptions { shakeFiles=".shake" } $ do
 
     want [ "hs/cbits/collatz.c" ]
 
-    "bench" ~> do
-        need ["hs/cbits/collatz.c"]
+    "hs/dist-newstyle/build/x86_64-linux/ghc-8.2.2/collatz-0.1.0.0/b/bench/opt/build/bench/bench" %> \_ -> do
+        need ["hs/cbits/collatz.c", "hs/src/Lib.hs", "hs/Setup.hs", "hs/cabal.project.local", "hs/collatz.cabal"]
         path <- fromMaybe "" <$> getEnv "PATH"
-        command_ [Cwd "hs", AddEnv "PATH" path, RemEnv "GHC_PACKAGE_PATH"] "cabal" ["new-bench"]
+        command_ [Cwd "hs", AddEnv "PATH" path, RemEnv "GHC_PACKAGE_PATH"] "cabal" ["new-build", "collatz:bench"]
+
+    "docs/criterion.html" %> \out -> do
+        need ["hs/cbits/collatz.c", "hs/dist-newstyle/build/x86_64-linux/ghc-8.2.2/collatz-0.1.0.0/b/bench/opt/build/bench/bench"]
+        command [] "hs/dist-newstyle/build/x86_64-linux/ghc-8.2.2/collatz-0.1.0.0/b/bench/opt/build/bench/bench" ["--output", out]
+
+    "bench" ~> do
+        need ["docs/criterion.html"]
         command_ [Cwd "rs"] "cargo" ["bench"]
 
     "ci" ~> do
@@ -45,3 +52,4 @@ main = shakeArgs shakeOptions { shakeFiles=".shake" } $ do
         cmd_ ["sn", "c"]
         removeFilesAfter "." ["//*.c", "//tags", "build"]
         removeFilesAfter ".shake" ["//*"]
+        removeFilesAfter "docs" ["//*"]

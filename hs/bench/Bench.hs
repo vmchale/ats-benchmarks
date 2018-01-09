@@ -22,7 +22,8 @@ main =
                       [ bench "13" $ nf factorialPure 13
                       ]
                 , bgroup "derangement"
-                      [ bench "derangement" $ nf derangement 64
-                      , bench "derangementATS" $ nfIO (derangementATS 64)
+                      [ bench "derangement (64)" $ nf derangement 64
+                      , bench "id (96800425246141091510518408809597121)" $ nf id (96800425246141091510518408809597121 :: Integer)
+                      , bench "derangementATS (64)" $ nfIO (derangementATS 64)
                       ]
                 ]
