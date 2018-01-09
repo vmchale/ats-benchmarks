@@ -25,6 +25,23 @@ pub fn factorial(mut i: i64) -> i64 {
     l
 }
 
+pub fn fibonacci_ramp(mut i: u64) -> Int {
+    match i {
+        0 => Int::from(1),
+        1 => Int::from(1),
+        _ => {
+            let mut n1: Int = Int::from(1);
+            let mut n0: Int = Int::from(1);
+            while i != 0 {
+                let n2 = n0 + &n1;
+                n0 = replace(&mut n1, n2);
+                i = i - 1;
+            }
+            n0
+        }
+    }
+}
+
 pub fn derangements_ramp(mut i: u64) -> Int {
     match i {
         0 => Int::from(1),
@@ -86,6 +103,12 @@ pub fn collatz_length(mut i: i64) -> i64 {
         l += 1;
     }
     l
+}
+
+#[test]
+fn test_fibonacci_ramp() {
+    let expected = Int::from(165580141);
+    assert_eq!(fibonacci_ramp(40), expected);
 }
 
 #[test]

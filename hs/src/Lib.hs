@@ -8,6 +8,7 @@ module Lib
     , factorialPure
     , derangement
     , derangementATS
+    , fibonacci
     ) where
 
 import           Control.Monad
@@ -21,8 +22,14 @@ foreign import ccall unsafe collatz_c :: CInt -> CInt
 foreign import ccall unsafe factorial :: CInt -> CInt
 foreign import ccall unsafe derangement_ats :: CInt -> Ptr GMPInt
 
+fibs :: [Integer]
+fibs = 1 : 1 : zipWith (+) fibs (tail fibs)
+
+fibonacci :: Int -> Integer
+fibonacci = (fibs !!)
+
 derangement :: Int -> Integer
-derangement n = derangements !! n
+derangement = (derangements !!)
 
 derangements :: [Integer]
 derangements = fmap snd g

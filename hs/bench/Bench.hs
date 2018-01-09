@@ -21,6 +21,9 @@ main =
                 , bgroup "factorialPure"
                       [ bench "13" $ nf factorialPure 13
                       ]
+                , bgroup "fibonacci"
+                      [ bench "50" $ nf fibonacci 50
+                      ]
                 , env envFileRead $ \ n ->
                   bgroup "derangement"
                       [ bench "derangement (64)" $ nf derangement n

@@ -29,6 +29,11 @@ fn collatz_106239(c: &mut Criterion) {
     c.bench_function("collatz (2223)", |b| b.iter(|| collatz_length(106239)));
 }
 
+fn fibonacci_ramp_bench(c: &mut Criterion) {
+    c.bench_function("fibonacci-RAMP", |b| b.iter(|| fibonacci_ramp(50)));
+}
+
 criterion_group!(derangements, derangement_ramp, derangement_gmp, derangement_bigint);
 criterion_group!(collatz, collatz_2223, collatz_10971, collatz_106239);
-criterion_main!(derangements, collatz);
+criterion_group!(fibonacci, fibonacci_ramp_bench);
+criterion_main!(derangements, collatz, fibonacci);
