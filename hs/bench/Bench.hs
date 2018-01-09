@@ -21,9 +21,11 @@ main =
                 , bgroup "factorialPure"
                       [ bench "13" $ nf factorialPure 13
                       ]
-                , bgroup "derangement"
-                      [ bench "derangement (64)" $ nf derangement 64
+                , env envFileRead $ \ n ->
+                  bgroup "derangement"
+                      [ bench "derangement (64)" $ nf derangement n
                       , bench "id (96800425246141091510518408809597121)" $ nf id (96800425246141091510518408809597121 :: Integer)
-                      , bench "derangementATS (64)" $ nfIO (derangementATS 64)
+                      , bench "derangementATS (64)" $ nfIO (derangementATS n)
                       ]
                 ]
+        where envFileRead = read <$> readFile "hs/scrap"

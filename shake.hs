@@ -17,6 +17,10 @@ main = shakeArgs shakeOptions { shakeFiles=".shake" } $ do
         need ["rs/Cargo.toml", "rs/src/lib.rs", "rs/benches/collatz.rs"]
         command_ [Cwd "rs"] "cargo" ["bench"]
 
+    "run" ~> do
+        need ["hs/dist-newstyle/build/x86_64-linux/ghc-8.2.2/collatz-0.1.0.0/b/bench/opt/build/bench/bench"]
+        command_ [] "hs/dist-newstyle/build/x86_64-linux/ghc-8.2.2/collatz-0.1.0.0/b/bench/opt/build/bench/bench" []
+
     "docs/*.svg" %> \out -> do
         let fileBase = dropExtension (dropDirectory1 out)
         let target = "rs/.criterion/" ++ fileBase ++ "/new/regression.svg"
