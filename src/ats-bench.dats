@@ -25,7 +25,7 @@ int collatz_c(int n) {
 }
 %}
 
-fn derangements {n : nat} .<n>. (n : int(n)) : Intinf =
+fn derangements {n : nat} (n : int(n)) : Intinf =
   let
     fnx loop { n : nat | n > 1 }{ i : nat | i <= n } .<n-i>. ( n : int(n)
                                                              , i : int(i)
@@ -34,16 +34,16 @@ fn derangements {n : nat} .<n>. (n : int(n)) : Intinf =
                                                              ) : Intinf =
       if i < n then
         let
-          val x = add_intinf0_intinf1(n2, n1)
-          val y = mul_intinf0_int(x, i)
+          var x = add_intinf0_intinf1(n2, n1)
+          var y = mul_intinf0_int(x, i)
         in
           loop(n, i + 1, y, n1)
         end
       else
         let
-          val x = add_intinf0_intinf1(n2, n1)
+          var x = add_intinf0_intinf1(n2, n1)
           val _ = intinf_free(n1)
-          val y = mul_intinf0_int(x, i)
+          var y = mul_intinf0_int(x, i)
         in
           y
         end

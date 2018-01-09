@@ -29,7 +29,7 @@ main = shakeArgs shakeOptions { shakeFiles=".shake" } $ do
         command_ [Cwd "hs", AddEnv "PATH" path, RemEnv "GHC_PACKAGE_PATH"] "cabal" ["new-build", "collatz:bench"]
 
     "docs/criterion.html" %> \out -> do
-        need ["hs/cbits/collatz.c", "hs/dist-newstyle/build/x86_64-linux/ghc-8.2.2/collatz-0.1.0.0/b/bench/opt/build/bench/bench"]
+        need ["hs/dist-newstyle/build/x86_64-linux/ghc-8.2.2/collatz-0.1.0.0/b/bench/opt/build/bench/bench"]
         command [] "hs/dist-newstyle/build/x86_64-linux/ghc-8.2.2/collatz-0.1.0.0/b/bench/opt/build/bench/bench" ["--output", out]
 
     "ci" ~> do
