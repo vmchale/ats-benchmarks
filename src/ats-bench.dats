@@ -1,12 +1,6 @@
 #include "share/atspre_staload.hats"
 #include "contrib/atscntrb-hx-intinf/mylibies.hats"
 
-%{^
-#define ATS_MEMALLOC_LIBC
-#include "ccomp/runtime/pats_ccomp_memalloc_libc.h"
-#include "ccomp/runtime/pats_ccomp_runtime_memalloc.c"
-%}
-
 #define ATS_MAINATSFLAG 1
 
 staload "contrib/atscntrb-hx-intinf/SATS/intinf_vt.sats"
@@ -24,6 +18,39 @@ int collatz_c(int n) {
   return l;
 }
 %}
+
+fun factorial_big {n : nat} .<n>. (k : int(n)) : Intinf =
+  case+ k of
+    | 0 => int2intinf(1)
+    | k =>> mul_intinf0_int(factorial_big(k - 1), k)
+
+fn fib {n : nat} (n : int(n)) : Intinf =
+  let
+    fnx loop { n : nat | n > 1 }{i : nat} .<max(0,n-i)>. ( n : int(n)
+                                                         , i : int(i)
+                                                         , n1 : Intinf
+                                                         , n2 : Intinf
+                                                         ) : Intinf =
+      if i < n then
+        let
+          var x = add_intinf0_intinf1(n2, n1)
+        in
+          loop(n, i + 1, x, n1)
+        end
+      else
+        let
+          var x = add_intinf0_intinf1(n2, n1)
+          val _ = intinf_free(n1)
+        in
+          x
+        end
+  in
+    case+ n of
+      | 0 => int2intinf(1)
+      | 1 =>> int2intinf(1)
+      | 2 =>> int2intinf(2)
+      | n =>> loop(n - 1, 2, int2intinf(2), int2intinf(1))
+  end
 
 fn derangements {n : nat} (n : int(n)) : Intinf =
   let
@@ -54,11 +81,6 @@ fn derangements {n : nat} (n : int(n)) : Intinf =
       | 2 =>> int2intinf(1)
       | n =>> loop(n - 1, 2, int2intinf(1), int2intinf(0))
   end
-
-fun factorial_recursion {n : nat} .<n>. (k : int(n)) :<> int =
-  case+ k of
-    | 0 => 1
-    | k =>> factorial_recursion(k - 1) * k
 
 fun collatz_sequence(n : intGt(0)) : stream_vt(int) =
   case+ n of
@@ -109,21 +131,28 @@ fun collatz_fs {n : nat} : int(n) -> int =
   "mac#"
 
 extern
-fun factorial {n : nat} : int(n) -> int =
+fun factorial_ats_big {n : nat} : int(n) -> Intinf =
   "mac#"
 
 extern
 fun derangement_ats {n : nat} : int(n) -> Intinf =
   "mac#"
 
-implement factorial (n) =
-  factorial_recursion(n)
+extern
+fun fib_ats {n : nat} : int(n) -> Intinf =
+  "mac#"
+
+implement factorial_ats_big (n) =
+  factorial_big(n)
 
 implement collatz_fs (m) =
   collatz_stack_fun(m)
 
 implement derangement_ats (m) =
   derangements(m)
+
+implement fib_ats (m) =
+  fib(m)
 
 extern
 fun collatz : intGt(0) -> int =

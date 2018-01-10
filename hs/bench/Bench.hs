@@ -15,14 +15,13 @@ main =
                       , bench "10971" $ nf collatzC 10971
                       , bench "106239" $ nf collatzC 106239
                       ]
-                , bgroup "factorialATS"
-                      [ bench "13" $ nf factorialATS 13
-                      ]
-                , bgroup "factorialPure"
-                      [ bench "13" $ nf factorialPure 13
+                , bgroup "factorial (large)"
+                      [ bench "Haskell 50" $ nf (factorial :: Int -> Integer) 50
+                      , bench "ATS 50" $ nfIO (factorialATS 50)
                       ]
                 , bgroup "fibonacci"
-                      [ bench "50" $ nf fibonacci 50
+                      [ bench "fibonacci (50)" $ nf fibonacci 50
+                      , bench "fibonacciATS (50)" $ nfIO (fibonacciATS 50)
                       ]
                 , env envFileRead $ \ n ->
                   bgroup "derangement"

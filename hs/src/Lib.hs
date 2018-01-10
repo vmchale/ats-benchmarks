@@ -5,22 +5,30 @@ module Lib
     , collatzATS
     , collatzC
     , factorialATS
-    , factorialPure
+    , factorial
     , derangement
     , derangementATS
     , fibonacci
+    , fibonacciATS
     ) where
 
-import           Control.Monad
 import           Data.GMP
 import           Foreign.C
 import           Foreign.Ptr
-import           Foreign.Storable
+
+{-# SPECIALIZE factorial :: Int -> Integer #-}
 
 foreign import ccall unsafe collatz :: CInt -> CInt
 foreign import ccall unsafe collatz_c :: CInt -> CInt
-foreign import ccall unsafe factorial :: CInt -> CInt
 foreign import ccall unsafe derangement_ats :: CInt -> Ptr GMPInt
+foreign import ccall unsafe fib_ats :: CInt -> Ptr GMPInt
+foreign import ccall unsafe factorial_ats_big :: CInt -> Ptr GMPInt
+
+factorials :: (Integral a) => [a]
+factorials = 1 : 1 : zipWith (*) [2..] (tail factorials)
+
+factorial :: (Integral a) => Int -> a
+factorial = (factorials !!)
 
 fibs :: [Integer]
 fibs = 1 : 1 : zipWith (+) fibs (tail fibs)
@@ -38,15 +46,14 @@ derangements = fmap snd g
 collatzC :: Int -> Int
 collatzC = fromIntegral . collatz_c . fromIntegral
 
+fibonacciATS :: Int -> IO Integer
+fibonacciATS = conjugateGMP fib_ats
+
 derangementATS :: Int -> IO Integer
-derangementATS = gmpToInteger <=< (peek . derangement_ats . fromIntegral)
+derangementATS = conjugateGMP derangement_ats
 
-factorialATS :: Int -> Int
-factorialATS = fromIntegral . factorial . fromIntegral
-
-factorialPure :: Int -> Int
-factorialPure 0 = 1
-factorialPure n = n * factorialPure (n-1)
+factorialATS :: Int -> IO Integer
+factorialATS = conjugateGMP factorial_ats_big
 
 collatzATS :: Int -> Int
 collatzATS = fromIntegral . collatz . fromIntegral
