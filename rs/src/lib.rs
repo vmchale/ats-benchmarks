@@ -26,6 +26,26 @@ pub fn factorial_ramp(n: u64) -> Int {
    a * n
 }
 
+pub fn factorial_gmp(n: i64) -> Mpz {
+   let mut a = Mpz::from(1);
+
+   for i in 2..n {
+       a *= i;
+   }
+
+   a * n
+}
+
+pub fn factorial_bigint(n: i64) -> BigInt {
+   let mut a: BigInt = One::one();
+
+   for i in 2..n {
+    a = a * i;
+   }
+
+   a * n
+}
+
 pub fn fibonacci_ramp(mut i: u64) -> Int {
     match i {
         0 => Int::from(1),
@@ -174,6 +194,18 @@ fn test_derangements_ramp() {
 fn test_derangements_bigint() {
     let expected = ToBigInt::to_bigint(&1334961).unwrap();
     assert_eq!(derangements_bigint(10), expected);
+}
+
+#[test]
+fn test_factorial_gmp() {
+    let expected = Mpz::from(479001600);
+    assert_eq!(factorial_gmp(12), expected);
+}
+
+#[test]
+fn test_factorial_bigint() {
+    let expected = ToBigInt::to_bigint(&479001600).unwrap();
+    assert_eq!(factorial_bigint(12), expected);
 }
 
 #[test]

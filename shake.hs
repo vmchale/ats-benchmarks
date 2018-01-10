@@ -8,6 +8,14 @@ import           Development.Shake.FilePath
 import           System.Exit                (ExitCode (..))
 import           System.FilePath.Posix
 
+
+mkSubCommand string =
+    string ~> do
+        need ["hs/dist-newstyle/build/x86_64-linux/ghc-8.2.2/collatz-0.1.0.0/b/bench/opt/build/bench/bench"]
+        need ["rs/Cargo.toml", "rs/src/lib.rs", "rs/benches/collatz.rs"]
+        command_ [] "hs/dist-newstyle/build/x86_64-linux/ghc-8.2.2/collatz-0.1.0.0/b/bench/opt/build/bench/bench" ["-m", "pattern", string]
+        command_ [Cwd "rs"] "cargo" ["bench", "--", string]
+
 main :: IO ()
 main = shakeArgs shakeOptions { shakeFiles=".shake" } $ do
 
@@ -17,17 +25,7 @@ main = shakeArgs shakeOptions { shakeFiles=".shake" } $ do
         need ["rs/Cargo.toml", "rs/src/lib.rs", "rs/benches/collatz.rs"]
         command_ [Cwd "rs"] "cargo" ["bench"]
 
-    "fact" ~> do
-        need ["hs/dist-newstyle/build/x86_64-linux/ghc-8.2.2/collatz-0.1.0.0/b/bench/opt/build/bench/bench"]
-        need ["rs/Cargo.toml", "rs/src/lib.rs", "rs/benches/collatz.rs"]
-        command_ [] "hs/dist-newstyle/build/x86_64-linux/ghc-8.2.2/collatz-0.1.0.0/b/bench/opt/build/bench/bench" ["-m", "pattern", "fact"]
-        command_ [Cwd "rs"] "cargo" ["bench", "--", "fact"]
-
-    "fib" ~> do
-        need ["hs/dist-newstyle/build/x86_64-linux/ghc-8.2.2/collatz-0.1.0.0/b/bench/opt/build/bench/bench"]
-        need ["rs/Cargo.toml", "rs/src/lib.rs", "rs/benches/collatz.rs"]
-        command_ [] "hs/dist-newstyle/build/x86_64-linux/ghc-8.2.2/collatz-0.1.0.0/b/bench/opt/build/bench/bench" ["-m", "prefix", "fibonacci"]
-        command_ [Cwd "rs"] "cargo" ["bench", "--", "fibonacci"]
+    mapM_ mkSubCommand ["fact", "fib", "collatz", "derangement"]
 
     "docs/*.svg" %> \out -> do
         let fileBase = dropExtension (dropDirectory1 out)

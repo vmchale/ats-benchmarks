@@ -17,6 +17,7 @@ import           Foreign.C
 import           Foreign.Ptr
 
 {-# SPECIALIZE factorial :: Int -> Integer #-}
+{-# SPECIALIZE fibonacci :: Int -> Integer #-}
 
 foreign import ccall unsafe collatz :: CInt -> CInt
 foreign import ccall unsafe collatz_c :: CInt -> CInt
@@ -30,10 +31,10 @@ factorials = 1 : 1 : zipWith (*) [2..] (tail factorials)
 factorial :: (Integral a) => Int -> a
 factorial = (factorials !!)
 
-fibs :: [Integer]
+fibs :: (Integral a) => [a]
 fibs = 1 : 1 : zipWith (+) fibs (tail fibs)
 
-fibonacci :: Int -> Integer
+fibonacci :: (Integral a) => Int -> a
 fibonacci = (fibs !!)
 
 derangement :: Int -> Integer

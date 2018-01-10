@@ -45,8 +45,16 @@ fn factorial_ramp_bench(c: &mut Criterion) {
     c.bench_function("factorial-RAMP", |b| b.iter(|| factorial_ramp(50)));
 }
 
+fn factorial_gmp_bench(c: &mut Criterion) {
+    c.bench_function("factorial-GMP", |b| b.iter(|| factorial_gmp(50)));
+}
+
+fn factorial_bigint_bench(c: &mut Criterion) {
+    c.bench_function("factorial-bigint", |b| b.iter(|| factorial_bigint(50)));
+}
+
 criterion_group!(derangements, derangement_ramp, derangement_gmp, derangement_bigint);
 criterion_group!(collatz, collatz_2223, collatz_10971, collatz_106239);
 criterion_group!(fibonacci, fibonacci_ramp_bench, fibonacci_gmp_bench, fibonacci_bigint_bench);
-criterion_group!(factorial, factorial_ramp_bench);
+criterion_group!(factorial, factorial_ramp_bench, factorial_gmp_bench, factorial_bigint_bench);
 criterion_main!(derangements, collatz, fibonacci, factorial);
