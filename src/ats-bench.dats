@@ -19,7 +19,7 @@ int collatz_c(int n) {
 }
 %}
 
-fun factorial_big {n : nat} .<n>. (k : int(n)) : Intinf =
+fnx factorial_big {n : nat} .<n>. (k : int(n)) : Intinf =
   case+ k of
     | 0 => int2intinf(1)
     | k =>> mul_intinf0_int(factorial_big(k - 1), k)

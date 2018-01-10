@@ -60,6 +60,23 @@ pub fn fibonacci_gmp(mut i: i64) -> Mpz {
     }
 }
 
+pub fn fibonacci_bigint(mut i: i64) -> BigInt {
+    match i {
+        0 => One::one(),
+        1 => One::one(),
+        _ => {
+    let mut n1: BigInt = One::one();
+    let mut n0: BigInt = One::one();
+    while i != 0 {
+        let n2 = n0 + &n1;
+        n0 = replace(&mut n1, n2);
+        i = i - 1;
+    }
+    n0
+        }
+    }
+}
+
 pub fn derangements_ramp(mut i: u64) -> Int {
     match i {
         0 => Int::from(1),
@@ -130,6 +147,18 @@ fn test_fibonacci_ramp() {
 }
 
 #[test]
+fn test_fibonacci_gmp() {
+    let expected = Mpz::from(165580141);
+    assert_eq!(fibonacci_gmp(40), expected);
+}
+
+#[test]
+fn test_fibonacci_bigint() {
+    let expected = ToBigInt::to_bigint(&165580141).unwrap();
+    assert_eq!(fibonacci_bigint(40), expected);
+}
+
+#[test]
 fn test_derangements_gmp() {
     let expected = Mpz::from(1334961);
     assert_eq!(derangements_gmp(10), expected);
@@ -148,7 +177,7 @@ fn test_derangements_bigint() {
 }
 
 #[test]
-fn test_factorial() {
-    let expected = 6227020800;
-    assert_eq!(factorial(13), expected);
+fn test_factorial_ramp() {
+    let expected = Int::from(479001600);
+    assert_eq!(factorial_ramp(12), expected);
 }

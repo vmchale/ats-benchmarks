@@ -47,10 +47,12 @@ main = shakeArgs shakeOptions { shakeFiles=".shake" } $ do
     "ci" ~> do
         need ["hs/cbits/collatz.c"]
         cmd_ ["tomlcheck", "--file", ".atsfmt.toml"]
+        cmd_ ["tomlcheck", "--file", "rs/Cargo.toml"]
         cmd_ ["yamllint", "hs/stack.yaml"]
         cmd_ ["hlint", "hs"]
         path <- fromMaybe "" <$> getEnv "PATH"
         command_ [Cwd "hs", AddEnv "PATH" path, RemEnv "GHC_PACKAGE_PATH"] "cabal" ["new-test"]
+        command_ [Cwd "rs"] "cargo" ["test"]
 
     "hs/cbits/collatz.c" %> \out -> do
         cmd_ ["mkdir", "-p", "hs/cbits"]
