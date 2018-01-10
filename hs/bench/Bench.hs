@@ -22,6 +22,7 @@ main =
                 , bgroup "fibonacci"
                       [ bench "fibonacci (50)" $ nf (fibonacci :: Int -> Integer) 50
                       , bench "fibonacciATS (50)" $ nfIO (fibonacciATS 50)
+                      , bench "fibonacciGMP (50)" $ nfIO (fibonacciGMP 50)
                       ]
                 , env envFileRead $ \ n ->
                   bgroup "derangement"

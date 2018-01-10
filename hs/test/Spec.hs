@@ -19,3 +19,6 @@ main = hspec $ parallel $ do
     describe "fibonacciATS" $
         it "should agree with the pure Haskell function for n=50" $
             fibonacciATS 50 >>= (`shouldBe` fibonacci 50)
+    describe "fibonacciGMP" $
+        it "should agree with the pure Haskell function for n=50" $
+            fibonacciGMP 50 >>= (`shouldBe` fibonacci 50)

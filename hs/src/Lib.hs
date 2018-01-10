@@ -10,19 +10,18 @@ module Lib
     , derangementATS
     , fibonacci
     , fibonacciATS
+    , fibonacciGMP
     ) where
 
 import           Data.GMP
 import           Foreign.C
 import           Foreign.Ptr
 
-{-# SPECIALIZE factorial :: Int -> Integer #-}
-{-# SPECIALIZE fibonacci :: Int -> Integer #-}
-
 foreign import ccall unsafe collatz :: CInt -> CInt
 foreign import ccall unsafe collatz_c :: CInt -> CInt
 foreign import ccall unsafe derangement_ats :: CInt -> Ptr GMPInt
 foreign import ccall unsafe fib_ats :: CInt -> Ptr GMPInt
+foreign import ccall unsafe fib_gmp :: CInt -> Ptr GMPInt
 foreign import ccall unsafe factorial_ats_big :: CInt -> Ptr GMPInt
 
 factorials :: (Integral a) => [a]
@@ -46,6 +45,9 @@ derangements = fmap snd g
 
 collatzC :: Int -> Int
 collatzC = fromIntegral . collatz_c . fromIntegral
+
+fibonacciGMP :: Int -> IO Integer
+fibonacciGMP = conjugateGMP fib_gmp
 
 fibonacciATS :: Int -> IO Integer
 fibonacciATS = conjugateGMP fib_ats

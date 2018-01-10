@@ -1,11 +1,19 @@
 #include "share/atspre_staload.hats"
 #include "contrib/atscntrb-hx-intinf/mylibies.hats"
+#include "contrib/atscntrb-libgmp/mylibies.hats"
 
 #define ATS_MAINATSFLAG 1
 
+staload UN = "prelude/SATS/unsafe.sats"
 staload "contrib/atscntrb-hx-intinf/SATS/intinf_vt.sats"
+staload "contrib/atscntrb-libgmp/SATS/gmp.sats"
+
+vtypedef mpz = $GMP.mpz_vt0ype
 
 %{$
+// mpz fib_c(int n) {
+//  mpz_fib_ui(n)
+
 int collatz_c(int n) {
   int l = 1;
   while (n != 1) {
@@ -18,6 +26,16 @@ int collatz_c(int n) {
   return l;
 }
 %}
+
+fun fib_quick(n : int) : Intinf =
+  let
+    val z = ptr_alloc<mpz>()
+    val x: ulint = g0int2uint_int_ulint(n + 1)
+    val () = $GMP.mpz_init(!(z.2))
+    val () = mpz_fib_uint(!(z.2), x)
+  in
+    $UN.castvwtp0(z)
+  end
 
 fnx factorial_big {n : nat} .<n>. (k : int(n)) : Intinf =
   case+ k of
@@ -142,6 +160,14 @@ extern
 fun fib_ats {n : nat} : int(n) -> Intinf =
   "mac#"
 
+extern
+fun fib_gmp {n : nat} : int(n) -> Intinf =
+  "mac#"
+
+extern
+fun collatz : intGt(0) -> int =
+  "mac#"
+
 implement factorial_ats_big (n) =
   factorial_big(n)
 
@@ -154,9 +180,8 @@ implement derangement_ats (m) =
 implement fib_ats (m) =
   fib(m)
 
-extern
-fun collatz : intGt(0) -> int =
-  "mac#"
+implement fib_gmp (m) =
+  fib_quick(m)
 
 implement collatz (m) =
   collatz_length(m)
